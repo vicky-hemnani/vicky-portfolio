@@ -327,6 +327,39 @@ profile: "/your-image-name.png"; // or .jpg, .webp
 
 ## Deployment :rocket:
 
+### 📄 Deploy to GitHub Pages
+
+The project is set up to deploy to **GitHub Pages** (e.g. `https://yourusername.github.io/developer-portfolio/`).
+
+**One-time setup:**
+
+1. **Enable GitHub Pages**
+   - Open your repo on GitHub → **Settings** → **Pages**
+   - Under **Build and deployment** → **Source**, choose **GitHub Actions**
+
+2. **Push and deploy**
+   - Push your code to the `main` branch. The workflow (`.github/workflows/deploy.yml`) will:
+     - Build the site with static export
+     - Deploy the `out` folder to GitHub Pages
+
+**URLs:**
+- **Project site** (repo name e.g. `developer-portfolio`):  
+  `https://<your-username>.github.io/developer-portfolio/`
+- **User/org site** (repo name `your-username.github.io`):  
+  `https://<your-username>.github.io/`
+
+**Local build (optional):**
+```bash
+# Project site (repo name = developer-portfolio)
+BASE_PATH=/developer-portfolio npm run build
+
+# User site (username.github.io repo)
+npm run build
+```
+The static files will be in the `out/` folder.
+
+---
+
 ### 🚀 Deploy to Vercel (Recommended)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/said7388/developer-portfolio)

@@ -10,9 +10,13 @@ import "./css/globals.scss";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Portfolio of Abu Said - Software Developer",
+  title: "Portfolio of Vicky Hemnani - Full Stack Developer",
   description:
-    "This is the portfolio of Abu Said. I am a full stack developer and a self taught developer. I love to learn new things and I am always open to collaborating with others. I am a quick learner and I am always looking for new challenges.",
+    "Portfolio of Vicky Hemnani. Performance-focused Full Stack Developer with 4 years of experience in web application development, specializing in end-to-end solutions. Proficient in .NET, React, Next.js, microservices, and event-driven architectures.",
+  // Tab icon (favicon): put your image in public/ as favicon.ico or icon.png
+  icons: {
+    icon: "/profile.jpg",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -25,7 +29,6 @@ export default function RootLayout({ children }) {
           {children}
           <ScrollToTop />
         </main>
-        <Footer />
       </body>
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM} />
     </html>

@@ -1,20 +1,14 @@
 export const educations = [
   {
     id: 1,
-    title: "Bachelor Degree",
-    duration: "2020 - Present",
-    institution: "National University of Bangladesh",
+    title: "Bachelor of Engineering in Computer Engineering (GPA: 9.5)",
+    duration: "May 2022",
+    institution: "Gujarat Technological University, Ahmedabad, India",
   },
   {
     id: 2,
-    title: "Higher Secondary Certificate",
-    duration: "2018 - 2020",
-    institution: "Noakhali Islamia Kamil Madrasah",
-  },
-  {
-    id: 3,
-    title: "Secondary School Certificate",
-    duration: "2008 - 2018",
-    institution: "Baitus Saif Islamia Madrasah",
+    title: "Higher Secondary (Class XII: 92%)",
+    duration: "June 2018",
+    institution: "Saint Paul's School, ISC Board",
   }
 ]

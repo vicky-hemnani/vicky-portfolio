@@ -1,7 +1,8 @@
 "use client";
 // @flow strict
+import { personalData } from "@/utils/data/personal-data";
 import { isValidEmail } from "@/utils/check-email";
-import axios from "axios";
+import emailjs from "@emailjs/browser";
 import { useState } from "react";
 import { TbMailForward } from "react-icons/tb";
 import { toast } from "react-toastify";
@@ -31,26 +32,37 @@ function ContactForm() {
       return;
     } else {
       setError({ ...error, required: false });
-    };
+    }
+
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      toast.info("Contact form not configured. Open your email client to send instead.");
+      window.location.href = `mailto:${personalData.email}?subject=Portfolio contact from ${encodeURIComponent(userInput.name)}&body=${encodeURIComponent(userInput.message)}%0D%0A%0D%0AReply to: ${encodeURIComponent(userInput.email)}`;
+      return;
+    }
 
     try {
       setIsLoading(true);
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_APP_URL}/api/contact`,
-        userInput
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: userInput.name,
+          from_email: userInput.email,
+          message: userInput.message,
+        },
+        publicKey
       );
-
       toast.success("Message sent successfully!");
-      setUserInput({
-        name: "",
-        email: "",
-        message: "",
-      });
-    } catch (error) {
-      toast.error(error?.response?.data?.message);
+      setUserInput({ name: "", email: "", message: "" });
+    } catch (err) {
+      toast.error(err?.text || "Failed to send message.");
     } finally {
       setIsLoading(false);
-    };
+    }
   };
 
   return (
