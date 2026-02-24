@@ -6,6 +6,8 @@ import { useState } from "react";
 import { TbMailForward } from "react-icons/tb";
 import { toast } from "react-toastify";
 
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mlgwagqb";
+
 function ContactForm() {
   const [error, setError] = useState({ email: false, required: false });
   const [isLoading, setIsLoading] = useState(false);
@@ -33,12 +35,16 @@ function ContactForm() {
       setError({ ...error, required: false });
     }
 
-    const formspreeEndpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "https://formspree.io/f/mlgwagqb";
+    const formspreeEndpoint = typeof process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT === "string" && process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT
+      ? process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT
+      : FORMSPREE_ENDPOINT;
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    const useFormspree = !!formspreeEndpoint;
+    const useEmailJS = !!(serviceId && templateId && publicKey);
 
-    if (!formspreeEndpoint && (!serviceId || !templateId || !publicKey)) {
+    if (!useFormspree && !useEmailJS) {
       toast.error("Contact form is not configured yet. Please add Formspree or EmailJS to receive messages.");
       return;
     }
@@ -46,7 +52,7 @@ function ContactForm() {
     try {
       setIsLoading(true);
 
-      if (formspreeEndpoint) {
+      if (useFormspree) {
         const res = await fetch(formspreeEndpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -56,7 +62,10 @@ function ContactForm() {
             message: userInput.message,
           }),
         });
-        if (!res.ok) throw new Error("Failed to send");
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || "Failed to send");
+        }
       } else {
         await emailjs.send(
           serviceId,
