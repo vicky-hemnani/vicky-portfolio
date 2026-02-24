@@ -15,7 +15,7 @@ export const metadata = {
     "Portfolio of Vicky Hemnani. Performance-focused Full Stack Developer with 4 years of experience in web application development, specializing in end-to-end solutions. Proficient in .NET, React, Next.js, microservices, and event-driven architectures.",
   // Tab icon (favicon): put your image in public/ as favicon.ico or icon.png
   icons: {
-    icon: "/profile.jpg",
+    icon: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/profile.jpg`,
   },
 };
 
